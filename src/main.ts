@@ -7,8 +7,12 @@ import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const frontendUrl = process.env.FRONTEND_URL;
+
    app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: frontendUrl
+    ?['http://localhost:4200', frontendUrl]
+    : 'http://localhost:4200',
   });
 
   // Permet d'afficher les images uploadées 
