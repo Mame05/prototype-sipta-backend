@@ -13,21 +13,21 @@ import { CreateOrderItemDto } from './create-order-item.dto';
 export class CreateOrderDto {
   @IsString()
   @IsNotEmpty()
-  nomClient: string;
+  nomClient!: string;
 
   @IsString()
   @IsNotEmpty()
-  telephone: string;
+  telephone!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @IsNotEmpty()
-  adresse: string;
+  adresse!: string;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateOrderItemDto)
-  items: CreateOrderItemDto[];
+  items!: CreateOrderItemDto[];
 }

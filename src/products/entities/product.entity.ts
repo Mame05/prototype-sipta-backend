@@ -13,36 +13,36 @@ import { Category } from '../../categories/entities/category.entity';
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 150 })
-  nom: string;
+  nom!: string;
 
   @Column({ type: 'text', nullable: true })
-  description: string;
+  description!: string;
 
   @Column({ type: 'integer' })
-  prix: number;
+  prix!: number;
 
   @Column({ nullable: true })
-  image: string;
+  image!: string;
 
   @Column({ type: 'integer', default: 0 })
-  stock: number;
+  stock!: number;
 
   @Column({ default: true })
-  disponible: boolean;
+  disponible!: boolean;
 
   @Column({ name: 'category_id' })
-  categoryId: number;
+  categoryId!: number;
 
   @ManyToOne(() => Category, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'category_id' })
-  category: Category;
+  category!: Category;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

@@ -6,9 +6,9 @@ import {
 export class CreateOrderItemDto {
   @IsInt()
   @Min(1)
-  productId: number;
+  productId!: number;
 
   @IsInt()
   @Min(1)
-  quantity: number;
+  quantity!: number;
 }

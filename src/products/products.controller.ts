@@ -12,8 +12,9 @@ import {
 } from '@nestjs/common';
 
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
+
+import { v2 as cloudinary } from 'cloudinary';
 
 import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
@@ -25,7 +26,16 @@ export class ProductsController {
 
   constructor(
     private readonly productsService: ProductsService,
-  ) {}
+  ) {
+
+    // Configuration Cloudinary
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+  }
 
   // =========================
   // UPLOAD IMAGE
@@ -34,17 +44,7 @@ export class ProductsController {
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/products',
-
-        filename: (req, file, callback) => {
-
-          const uniqueName =
-            `${Date.now()}-${Math.round(Math.random() * 1E9)}${extname(file.originalname)}`;
-
-          callback(null, uniqueName);
-        },
-      }),
+      storage: memoryStorage(),
 
       limits: {
         fileSize: 5 * 1024 * 1024,
@@ -63,7 +63,7 @@ export class ProductsController {
       },
     }),
   )
-  uploadImage(
+  async uploadImage(
     @UploadedFile() file: Express.Multer.File,
   ) {
 
@@ -73,9 +73,32 @@ export class ProductsController {
       };
     }
 
+    // Envoi de l'image vers Cloudinary
+    const result = await new Promise<any>((resolve, reject) => {
+
+      const upload = cloudinary.uploader.upload_stream(
+        {
+          folder: 'sipta/products',
+          resource_type: 'image',
+        },
+
+        (error, result) => {
+
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+
+        },
+      );
+
+      upload.end(file.buffer);
+    });
+
     return {
       message: 'Image uploadée avec succès.',
-      image: file.filename,
+      image: result.secure_url,
     };
   }
 
@@ -138,4 +161,3 @@ export class ProductsController {
     return this.productsService.remove(id);
   }
 }
-

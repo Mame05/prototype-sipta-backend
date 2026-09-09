@@ -4,7 +4,7 @@ export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  nom: string;
+  nom!: string;
 
   @IsOptional()
   @IsString()

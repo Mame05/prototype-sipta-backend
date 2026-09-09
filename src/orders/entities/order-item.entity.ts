@@ -12,28 +12,28 @@ import { Product } from '../../products/entities/product.entity';
 @Entity('order_items')
 export class OrderItem {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ name: 'quantity', type: 'integer' })
-  quantity: number;
+  quantity!: number;
 
   @Column({ name: 'prix_unitaire', type: 'integer' })
-  prixUnitaire: number;
+  prixUnitaire!: number;
 
   @Column({ name: 'sous_total', type: 'integer' })
-  sousTotal: number;
+  sousTotal!: number;
 
   @Column({ name: 'order_id' })
-  orderId: number;
+  orderId!: number;
 
   @ManyToOne(() => Order, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'order_id' })
-  order: Order;
+  order!: Order;
 
   @Column({ name: 'product_id' })
-  productId: number;
+  productId!: number;
 
   @ManyToOne(() => Product, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'product_id' })
-  product: Product;
+  product!: Product;
 }

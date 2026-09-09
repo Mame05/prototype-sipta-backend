@@ -11,7 +11,7 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(150)
-  nom: string;
+  nom!: string;
 
   @IsOptional()
   @IsString()
@@ -19,7 +19,7 @@ export class CreateProductDto {
 
   @IsInt()
   @Min(0)
-  prix: number;
+  prix!: number;
 
   @IsOptional()
   @IsString()
@@ -27,7 +27,7 @@ export class CreateProductDto {
 
   @IsInt()
   @Min(0)
-  stock: number;
+  stock!: number;
 
   @IsOptional()
   @IsBoolean()
@@ -35,5 +35,5 @@ export class CreateProductDto {
 
   @IsInt()
   @Min(1)
-  categoryId: number;
+  categoryId!: number;
 }
